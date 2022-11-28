@@ -11,7 +11,7 @@ if($_POST) {
 	echo $message;
 
 	$url = $_ENV["BLOWERIO_URL"] . "/messages";
-	$data = array('to' => '+12069400857', 'message' => $message);
+	$data = array('to' => '+12069400857', 'message' => 'This is a test');
 
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_POST, 1);
