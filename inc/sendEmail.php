@@ -3,71 +3,25 @@
 // Replace this with your own email address
 $siteOwnersEmail = 'gtullio12@protonmail.com';
 
-
 if($_POST) {
 
-   $name = trim(stripslashes($_POST['contactName']));
-   $email = trim(stripslashes($_POST['contactEmail']));
-   $subject = trim(stripslashes($_POST['contactSubject']));
-   $contact_message = trim(stripslashes($_POST['contactMessage']));
-
-   // Check Name
-	if (strlen($name) < 2) {
-		$error['name'] = "Please enter your name.";
-	}
-	// Check Email
-	if (!preg_match('/^[a-z0-9&\'\.\-_\+]+@[a-z0-9\-]+\.([a-z0-9\-]+\.)*+[a-z]{2}/is', $email)) {
-		$error['email'] = "Please enter a valid email address.";
-	}
-	// Check Message
-	if (strlen($contact_message) < 15) {
-		$error['message'] = "Please enter your message. It should have at least 15 characters.";
-	}
-   // Subject
-	if ($subject == '') { $subject = "Contact Form Submission"; }
-
-
-   // Set Message
-   $message .= "Email from: " . $name . "<br />";
+	$name = trim(stripslashes($_POST['contactName']));
+	$message .= "Message from: " . $name . "<br />";
 	$message .= "Email address: " . $email . "<br />";
-   $message .= "Message: <br />";
-   $message .= $contact_message;
-   $message .= "<br /> ----- <br /> This email was sent from your site's contact form. <br />";
+	$message .= "Message: <br />";
+	$message .= $contact_message;
+	$message .= "<br /> ----- <br /> This email was sent from your site's contact form. <br />";
 
-   // Set From: header
-   $from =  $name . " <" . $email . ">";
+	$url = $_ENV["BLOWERIO_URL"] . "/messages";
+	$data = array('to' => '+12069400857', 'message' => 'Hello from Blower.io');
 
-   // Email Headers
-	$headers = "From: " . $from . "\r\n";
-	$headers .= "Reply-To: ". $email . "\r\n";
- 	$headers .= "MIME-Version: 1.0\r\n";
-	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-
-   if (!$error) {
-
-      ini_set("sendmail_from", $siteOwnersEmail); // for windows server
-	  ini_set('display_errors', 1);
-	  ini_set('display_startup_errors', 1);
-	  error_reporting(E_ALL);
-	  echo $message;
-      $mail = mail($siteOwnersEmail, $subject, $message, $headers);
-
-		//if ($mail) { echo "OK"; }
-      //else { echo "Something went wrong. Please try again."; }
-		
-	} # end if - no validation error
-
-	else {
-
-		$response = (isset($error['name'])) ? $error['name'] . "<br /> \n" : null;
-		$response .= (isset($error['email'])) ? $error['email'] . "<br /> \n" : null;
-		$response .= (isset($error['message'])) ? $error['message'] . "<br />" : null;
-		
-		echo $response;
-
-	} # end if - there was a validation error
-
+	$response = curl_exec($ch);
+	curl_close($ch);
 }
 
 ?>
