@@ -13,7 +13,7 @@ if($_POST) {
 	$message .= $contact_message;
 	$message .= "This message was sent from your site's contact form.";
 
-	echo $message + "\n\n";
+	echo $message;
 
 	$url = $_ENV["BLOWERIO_URL"] . "/messages";
 	$data = array('to' => '+12069400857', 'message' => $message);
