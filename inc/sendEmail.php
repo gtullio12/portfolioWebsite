@@ -7,12 +7,7 @@ if($_POST) {
    	$contact_message = trim(stripslashes($_POST['contactMessage']));
 
 	$name = trim(stripslashes($_POST['contactName']));
-	$message .= "Message from: " . $name . "<br />";
-	$message .= "Email address: " . $email . "<br />";
-	$message .= "Message: <br />";
-	$message .= $contact_message;
-	$message .= "This message was sent from your site's contact form.";
-
+	$message = $name . ' ' . $email . ' ' . $contact_message
 	echo $message;
 
 	$url = $_ENV["BLOWERIO_URL"] . "/messages";
