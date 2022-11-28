@@ -50,10 +50,7 @@ if($_POST) {
 	  ini_set('display_errors', 1);
 	  ini_set('display_startup_errors', 1);
 	  error_reporting(E_ALL);
-	  echo $siteOwnersEmail;
-	  echo $subject;
 	  echo $message;
-	  echo $headers;
       $mail = mail($siteOwnersEmail, $subject, $message, $headers);
 
 		//if ($mail) { echo "OK"; }
