@@ -47,6 +47,9 @@ if($_POST) {
    if (!$error) {
 
       ini_set("sendmail_from", $siteOwnersEmail); // for windows server
+	  ini_set('display_errors', 1);
+	  ini_set('display_startup_errors', 1);
+	  error_reporting(E_ALL);
 	  echo $siteOwnersEmail;
       $mail = mail($siteOwnersEmail, $subject, $message, $headers);
 
